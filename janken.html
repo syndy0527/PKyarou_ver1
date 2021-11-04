@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=Corben:700 rel=" stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Creepster rel=" stylesheet">
+  <link rel="stylesheet" href="css/sample.css">
+  <title>PK合戦</title>
+</head>
+
+<body>
+
+  <header>
+    <div class="start"></div>
+    <P class="srtclass_block"><img src="img/title.png"></P>
+  </header>
+
+  <main>
+    <div class="field">
+      <div class="keeper"><img src="img/wakabayasi1.png" class="wakabayasi
+        "></div>
+      <div class="player"><img src="img/tubasa.png" class="tubasa"></div>
+      <div class="ball"><img src="img/ball.png " class="ballimg"></div>
+    </div>
+    <div class="title">
+      <img src="img/title.png" width="500" id="titleimg">
+    </div>
+    <table border="0" width=50% height=80 class="coment">
+      <tr>
+        <th class="order">あなたがキッカーです</th>
+      </tr>
+      <tr>
+        <td class="order1">コースを指定してください</td>
+      </tr>
+      <tr id="final_result"></tr>
+    </table>
+
+    <ul>
+      <li id="lightup_btn" class="course">右上</li>
+      <li id="centerup_btn" class="course">中央上</li>
+      <li id="leftup_btn" class="course">左上</li>
+      <li id="lightdown_btn" class="course">右下</li>
+      <li id="centerdown_btn" class="course">中央下</li>
+      <li id="leftdown_btn" class="course">左下</li>
+    </ul>
+
+
+
+    <input type="button" value="試合開始" id="btn">
+
+    <table border="1" width=50% height=150 class="resalt">
+      <tr>
+        <th width=20%></th>
+        <th width=16%>1</th>
+        <th width=16%>2</th>
+        <th width=16%>3</th>
+        <th width=16%>4</th>
+        <th width=16%>5</th>
+      </tr>
+      <tr>
+        <td>YOU</td>
+        <td class="y1"></td>
+        <td class="y2"></td>
+        <td class="y3"></td>
+        <td class="y4"></td>
+        <td class="y5"></td>
+      </tr>
+      <tr>
+        <td>COM</td>
+        <td class="c1"></td>
+        <td class="c2"></td>
+        <td class="c3"></td>
+        <td class="c4"></td>
+        <td class="c5"></td>
+      </tr>
+    </table>
+  </main>
+
+  <footer></footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    //ここに処理を追加
+    let cnt_gm = 0;
+    let cnt_man = 0;
+    let cnt_com = 0;
+    let ten_man = 0;
+    let ten_com = 0;
+    let win_cnt = 0;
+    let play = 1;
+
+    //function anim_goul1() {
+    //let img_src = new Array("title.png", "goal.jfif", "goal2.jpg");
+    //let i = 0;
+    //setInterval(function () {
+    //⑤
+    //if (i === img_src.length) {
+    //i = 0;
+    //}
+    //$("#titleimg").attr("src", "../02_second_work/img/" + img_src[i]);
+    //console.log(i++);
+    //}, 1000)
+    //}
+    //function anim_goul3() {
+    //let img_src = new Array("title.png", "goal.jfif", "goal2.jpg");
+    //let i = 0;
+    //setTimeout(function () {
+    //console.log(i++);
+    //$("#titleimg").attr("src", "../02_second_work/img/" + img_src[i]);
+    //}, 500)
+    //}
+    //function anim_goul2() {
+    //let img_src = new Array("title.png", "goal.jfif", "goal2.jpg");
+    //for (let i = 0; i < 2; i++) {
+    //$("#titleimg").attr("src", "../02_second_work/img/" + img_src[i]);
+    //}
+    //for (let i = 0; i <= 2; i++) {
+    //$("#titleimg").attr("src", "../02_second_work/img/" + img_src[i]);
+    //console.log(img_src[i]);
+    //}
+    //}
+    $(function () {
+      //スクロールを停止
+      scrollpos = $(window).scrollTop();//現在表示位置取得
+      $('header').addClass('scroll-fixed').css({ 'top': -scrollpos });
+      setTimeout(function () {
+        $('.start').fadeOut(500);
+        setTimeout(function () {
+          $('.start').addClass('srtclass_none');
+          $('header').removeClass('scroll-fixed').css({ 'top': 0 });
+          window.scrollTo(0, scrollpos);
+        }, 500);
+        $('header').css('display', "none");
+      }, 2500); //2.5秒後にロゴ含め真っ白背景をフェードアウト
+    });
+
+    let img_src = new Array("title.png", "goal3.png", "goal2.jpg", "images.jfif", "miss.png", "tubasashoot.jfif");
+    let resultimg_src = new Array("win.png", "loose.png", "sadon.png");
+
+    function anim_goul() {
+      $("#titleimg").attr("src", "img/" + img_src[0]);
+      console.log(img_src[0]);
+    }
+    function anim_goul1() {
+      $("#titleimg").attr("src", "img/" + img_src[1]);
+      console.log(img_src[1]);
+    }
+    function anim_goul2() {
+      $("#titleimg").attr("src", "img/" + img_src[2]);
+      console.log(img_src[2]);
+    }
+    function anim_goul3() {
+      $("#titleimg").attr("src", "img/" + img_src[3]);
+      console.log(img_src[3]);
+    }
+    function anim_goul4() {
+      $("#titleimg").attr("src", "img/" + img_src[4]);
+      console.log(img_src[4]);
+    }
+    function anim_goul5() {
+      $("#titleimg").attr("src", "img/" + img_src[5]);
+      console.log(img_src[5]);
+    }
+    function anim_result() {
+
+      $("#titleimg").attr("src", "img/" + resultimg_src[0]);
+      console.log(resultimg_src[0]);
+    }
+    function anim_result1() {
+      $("#titleimg").attr("src", "img/" + resultimg_src[1]);
+      console.log(resultimg_src[1]);
+    }
+    function anim_result2() {
+      $("#titleimg").attr("src", "img/" + resultimg_src[2]);
+      console.log(resultimg_src[2]);
+    }
+
+    function reset() {
+      cnt_gm = 0;
+      cnt_man = 0;
+      cnt_com = 0;
+      ten_man = 0;
+      ten_com = 0;
+      win_cnt = 0;
+      $(".c1").text("");
+      $(".c2").text("");
+      $(".c3").text("");
+      $(".c4").text("");
+      $(".c5").text("");
+      $(".y1").text("");
+      $(".y2").text("");
+      $(".y3").text("");
+      $(".y4").text("");
+      $(".y5").text("");
+    }
+
+    $("#lightup_btn").on("click", function () {
+      const min = 0;
+      const max = 5;
+      const randomnumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log(randomnumber)
+
+      $(".ball").animate({ "top": "-570px", "left": "200px" }, 500)
+      $(".ball").delay(1000).animate({ "top": "-120px", "left": "465px" })
+
+      if (randomnumber === 0) {
+        $("#com_keeper").text("右上");
+        $("#result").text("失敗");
+        $(".keeper").animate({ "top": "20px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul3()", 1500);
+        setTimeout("anim_goul4()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 1) {
+        $("#com_keeper").text("右下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 2) {
+        $("#com_keeper").text("中央上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "370px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 3) {
+        $("#com_keeper").text("中央下");
+        $("#result").text("GOOOOUL！");
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 4) {
+        $("#com_keeper").text("左上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 5) {
+        $("#com_keeper").text("左下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      }
+
+      cnt_gm++;
+      console.log(cnt_gm)
+      if (cnt_gm % 2 == 0) {
+        cnt_com++;
+        console.log(cnt_com)
+        play = 1;
+        console.log(play)
+        if (randomnumber > 0) {
+          ten_com++;
+          if (cnt_com == 1) {
+            $(".c1").text("〇");
+          } else if (cnt_com == 2) {
+            $(".c2").text("〇");
+          } else if (cnt_com == 3) {
+            $(".c3").text("〇");
+          } else if (cnt_com == 4) {
+            $(".c4").text("〇");
+          } else if (cnt_com == 5) {
+            $(".c5").text("〇");
+          }
+        } else {
+          console.log(play)
+          if (cnt_com == 1) {
+            $(".c1").text("✕");
+          } else if (cnt_com == 2) {
+            $(".c2").text("✕");
+          } else if (cnt_com == 3) {
+            $(".c3").text("✕");
+          } else if (cnt_com == 4) {
+            $(".c4").text("✕");
+          } else if (cnt_com == 5) {
+            $(".c5").text("✕");
+          }
+
+        }
+      } else {
+        cnt_man++;
+        console.log(cnt_man)
+        play = 2;
+        console.log(play)
+        if (randomnumber > 0) {
+          ten_man++;
+          if (cnt_man == 1) {
+            $(".y1").text("〇");
+          } else if (cnt_man == 2) {
+            $(".y2").text("〇");
+          } else if (cnt_man == 3) {
+            $(".y3").text("〇");
+          } else if (cnt_man == 4) {
+            $(".y4").text("〇");
+          } else if (cnt_man == 5) {
+            $(".y5").text("〇");
+          }
+        } else {
+          if (cnt_man == 1) {
+            $(".y1").text("✕");
+          } else if (cnt_man == 2) {
+            $(".y2").text("✕");
+          } else if (cnt_man == 3) {
+            $(".y3").text("✕");
+          } else if (cnt_man == 4) {
+            $(".y4").text("✕");
+          } else if (cnt_man == 5) {
+            $(".y5").text("✕");
+          }
+        }
+      }
+      if (play == 1) {
+        $(".order").text("あなたがキッカーです");
+        $("#player").attr("src", "img/tubasa.png");
+      } else if (play == 2) {
+        $(".order").text("あなたがキーパーです");
+        $("#player").attr("src", "img/hyuga.png");
+      }
+      if (cnt_gm === 10) {
+        if (ten_man - ten_com > 0) {
+          win_cnt++;
+          $("#final_result").text("あなたの勝ちです")
+          setTimeout("anim_result()", 2500)
+        } else if (ten_com - ten_man > 0) {
+          $("#final_result").text("あなたの負けです")
+          setTimeout("anim_result1()", 2500)
+        } else if (ten_com == ten_man) {
+          $("#final_result").text("サドンデス突入")
+          setTimeout("anim_result2()", 2500)
+          cnt_gm = 0;
+          cnt_man = 0;
+          cnt_com = 0;
+          $(".c1").text("");
+          $(".c2").text("");
+          $(".c3").text("");
+          $(".c4").text("");
+          $(".c5").text("");
+          $(".y1").text("");
+          $(".y2").text("");
+          $(".y3").text("");
+          $(".y4").text("");
+          $(".y5").text("");
+        }
+      }
+    })
+
+
+    $("#lightdown_btn").on("click", function () {
+      const min = 0;
+      const max = 5;
+      const randomnumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log(randomnumber)
+      $(".ball").animate({ "top": "-320px", "left": "200px" }, 500)
+      $(".ball").delay(1000).animate({ "top": "-120px", "left": "465px" })
+
+      if (randomnumber === 0) {
+        $("#com_keeper").text("右上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 1) {
+        $("#com_keeper").text("右下");
+        $("#result").text("失敗");
+        $(".keeper").animate({ "top": "100px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul3()", 1500);
+        setTimeout("anim_goul4()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 2) {
+        $("#com_keeper").text("中央上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "370px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 3) {
+        $("#com_keeper").text("中央下");
+        $("#result").text("GOOOOUL！");
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 4) {
+        $("#com_keeper").text("左上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 5) {
+        $("#com_keeper").text("左下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      }
+
+      cnt_gm++;
+      console.log(cnt_gm)
+      if (cnt_gm % 2 == 0) {
+        cnt_com++;
+        console.log(cnt_com)
+        play = 1;
+        console.log(play)
+        if (randomnumber <= 0 || randomnumber > 1) {
+          ten_com++;
+          if (cnt_com == 1) {
+            $(".c1").text("〇");
+          } else if (cnt_com == 2) {
+            $(".c2").text("〇");
+          } else if (cnt_com == 3) {
+            $(".c3").text("〇");
+          } else if (cnt_com == 4) {
+            $(".c4").text("〇");
+          } else if (cnt_com == 5) {
+            $(".c5").text("〇");
+          }
+        } else {
+          if (cnt_com == 1) {
+            $(".c1").text("✕");
+          } else if (cnt_com == 2) {
+            $(".c2").text("✕");
+          } else if (cnt_com == 3) {
+            $(".c3").text("✕");
+          } else if (cnt_com == 4) {
+            $(".c4").text("✕");
+          } else if (cnt_com == 5) {
+            $(".c5").text("✕");
+          }
+        }
+      } else {
+        cnt_man++;
+        console.log(cnt_man)
+        play = 2;
+        console.log(play)
+        if (randomnumber <= 0 || randomnumber > 1) {
+          ten_man++;
+          if (cnt_man == 1) {
+            $(".y1").text("〇");
+          } else if (cnt_man == 2) {
+            $(".y2").text("〇");
+          } else if (cnt_man == 3) {
+            $(".y3").text("〇");
+          } else if (cnt_man == 4) {
+            $(".y4").text("〇");
+          } else if (cnt_man == 5) {
+            $(".y5").text("〇");
+          }
+        } else {
+          if (cnt_man == 1) {
+            $(".y1").text("✕");
+          } else if (cnt_man == 2) {
+            $(".y2").text("✕");
+          } else if (cnt_man == 3) {
+            $(".y3").text("✕");
+          } else if (cnt_man == 4) {
+            $(".y4").text("✕");
+          } else if (cnt_man == 5) {
+            $(".y5").text("✕");
+          }
+        }
+
+      }
+
+      if (play == 1) {
+        $(".order").text("あなたがキッカーです");
+      } else if (play == 2) {
+        $(".order").text("あなたがキーパーです");
+      }
+
+      if (cnt_gm === 10) {
+        if (ten_man - ten_com > 0) {
+          win_cnt++;
+          $("#final_result").text("あなたの勝ちです")
+          setTimeout("anim_result()", 2500)
+        } else if (ten_com - ten_man > 0) {
+          $("#final_result").text("あなたの負けです")
+          setTimeout("anim_result1()", 2500)
+        } else if (ten_com == ten_man) {
+          $("#final_result").text("サドンデス突入")
+          setTimeout("anim_result2()", 2500)
+          cnt_gm = 0;
+          cnt_man = 0;
+          cnt_com = 0;
+          $(".c1").text("");
+          $(".c2").text("");
+          $(".c3").text("");
+          $(".c4").text("");
+          $(".c5").text("");
+          $(".y1").text("");
+          $(".y2").text("");
+          $(".y3").text("");
+          $(".y4").text("");
+          $(".y5").text("");
+        }
+      }
+    })
+
+    $("#centerup_btn").on("click", function () {
+
+      const min = 0;
+      const max = 5;
+      const randomnumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log(randomnumber)
+      $(".ball").animate({ "top": "-570px", "left": "465px" }, 500)
+      $(".ball").delay(1000).animate({ "top": "-120px", "left": "465px" })
+
+      if (randomnumber === 0) {
+        $("#com_keeper").text("右上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 1) {
+        $("#com_keeper").text("右下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 2) {
+        $("#com_keeper").text("中央上");
+        $("#result").text("失敗");
+        $(".keeper").animate({ "top": "20px", "left": "370px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul3()", 1500);
+        setTimeout("anim_goul4()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 3) {
+        $("#com_keeper").text("中央下");
+        $("#result").text("GOOOOUL！");
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 4) {
+        $("#com_keeper").text("左上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 5) {
+        $("#com_keeper").text("左下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      }
+      cnt_gm++;
+      console.log(cnt_gm)
+      if (cnt_gm % 2 == 0) {
+        cnt_com++;
+        play = 1;
+        console.log(play)
+        if (randomnumber <= 1 || randomnumber > 2) {
+          ten_com++;
+          if (cnt_com == 1) {
+            $(".c1").text("〇");
+          } else if (cnt_com == 2) {
+            $(".c2").text("〇");
+          } else if (cnt_com == 3) {
+            $(".c3").text("〇");
+          } else if (cnt_com == 4) {
+            $(".c4").text("〇");
+          } else if (cnt_com == 5) {
+            $(".c5").text("〇");
+          }
+        } else {
+          if (cnt_com == 1) {
+            $(".c1").text("✕");
+          } else if (cnt_com == 2) {
+            $(".c2").text("✕");
+          } else if (cnt_com == 3) {
+            $(".c3").text("✕");
+          } else if (cnt_com == 4) {
+            $(".c4").text("✕");
+          } else if (cnt_com == 5) {
+            $(".c5").text("✕");
+          }
+        }
+      } else {
+        cnt_man++;
+        play = 2;
+        console.log(play)
+        if (randomnumber <= 1 || randomnumber > 2) {
+          ten_man++;
+          if (cnt_man == 1) {
+            $(".y1").text("〇");
+          } else if (cnt_man == 2) {
+            $(".y2").text("〇");
+          } else if (cnt_man == 3) {
+            $(".y3").text("〇");
+          } else if (cnt_man == 4) {
+            $(".y4").text("〇");
+          } else if (cnt_man == 5) {
+            $(".y5").text("〇");
+          }
+        } else {
+          if (cnt_man == 1) {
+            $(".y1").text("✕");
+          } else if (cnt_man == 2) {
+            $(".y2").text("✕");
+          } else if (cnt_man == 3) {
+            $(".y3").text("✕");
+          } else if (cnt_man == 4) {
+            $(".y4").text("✕");
+          } else if (cnt_man == 5) {
+            $(".y5").text("✕");
+          }
+        }
+      }
+
+      if (play == 1) {
+        $(".order").text("あなたがキッカーです");
+      } else if (play == 2) {
+        $(".order").text("あなたがキーパーです");
+      }
+
+      if (cnt_gm === 10) {
+        if (ten_man - ten_com > 0) {
+          win_cnt++;
+          $("#final_result").text("あなたの勝ちです")
+          setTimeout("anim_result()", 2500)
+        } else if (ten_com - ten_man > 0) {
+          $("#final_result").text("あなたの負けです")
+          setTimeout("anim_result1()", 2500)
+        } else if (ten_com == ten_man) {
+          $("#final_result").text("サドンデス突入")
+          setTimeout("anim_result2()", 2500)
+          cnt_gm = 0;
+          cnt_man = 0;
+          cnt_com = 0;
+          $(".c1").text("");
+          $(".c2").text("");
+          $(".c3").text("");
+          $(".c4").text("");
+          $(".c5").text("");
+          $(".y1").text("");
+          $(".y2").text("");
+          $(".y3").text("");
+          $(".y4").text("");
+          $(".y5").text("");
+        }
+      }
+    })
+
+    $("#centerdown_btn").on("click", function () {
+
+      const min = 0;
+      const max = 5;
+      const randomnumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log(randomnumber)
+      $(".ball").animate({ "top": "-320px", "left": "465px" }, 500)
+      $(".ball").delay(1000).animate({ "top": "-120px", "left": "465px" })
+
+      if (randomnumber === 0) {
+        $("#com_keeper").text("右上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 1) {
+        $("#com_keeper").text("右下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 2) {
+        $("#com_keeper").text("中央上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "370px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 3) {
+        $("#com_keeper").text("中央下");
+        $("#result").text("失敗");
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul3()", 1500);
+        setTimeout("anim_goul4()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 4) {
+        $("#com_keeper").text("左上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 5) {
+        $("#com_keeper").text("左下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      }
+
+      cnt_gm++;
+      console.log(cnt_gm)
+      if (cnt_gm % 2 == 0) {
+        cnt_com++;
+        play = 1;
+        console.log(play)
+        if (randomnumber <= 2 || randomnumber > 3) {
+          ten_com++;
+          if (cnt_com == 1) {
+            $(".c1").text("〇");
+          } else if (cnt_com == 2) {
+            $(".c2").text("〇");
+          } else if (cnt_com == 3) {
+            $(".c3").text("〇");
+          } else if (cnt_com == 4) {
+            $(".c4").text("〇");
+          } else if (cnt_com == 5) {
+            $(".c5").text("〇");
+          }
+        } else {
+          if (cnt_com == 1) {
+            $(".c1").text("✕");
+          } else if (cnt_com == 2) {
+            $(".c2").text("✕");
+          } else if (cnt_com == 3) {
+            $(".c3").text("✕");
+          } else if (cnt_com == 4) {
+            $(".c4").text("✕");
+          } else if (cnt_com == 5) {
+            $(".c5").text("✕");
+          }
+        }
+      } else {
+        cnt_man++;
+        play = 2;
+        console.log(play)
+        if (randomnumber <= 2 || randomnumber > 3) {
+          ten_man++;
+          if (cnt_man == 1) {
+            $(".y1").text("〇");
+          } else if (cnt_man == 2) {
+            $(".y2").text("〇");
+          } else if (cnt_man == 3) {
+            $(".y3").text("〇");
+          } else if (cnt_man == 4) {
+            $(".y4").text("〇");
+          } else if (cnt_man == 5) {
+            $(".y5").text("〇");
+          }
+        } else {
+          if (cnt_man == 1) {
+            $(".y1").text("✕");
+          } else if (cnt_man == 2) {
+            $(".y2").text("✕");
+          } else if (cnt_man == 3) {
+            $(".y3").text("✕");
+          } else if (cnt_man == 4) {
+            $(".y4").text("✕");
+          } else if (cnt_man == 5) {
+            $(".y5").text("✕");
+          }
+        }
+      }
+
+      if (play == 1) {
+        $(".order").text("あなたがキッカーです");
+      } else if (play == 2) {
+        $(".order").text("あなたがキーパーです");
+      }
+
+      if (cnt_gm === 10) {
+        if (ten_man - ten_com > 0) {
+          win_cnt++;
+          $("#final_result").text("あなたの勝ちです")
+          setTimeout("anim_result()", 2500)
+        } else if (ten_com - ten_man > 0) {
+          $("#final_result").text("あなたの負けです")
+          setTimeout("anim_result1()", 2500)
+        } else if (ten_com == ten_man) {
+          $("#final_result").text("サドンデス突入")
+          setTimeout("anim_result2()", 2500)
+          cnt_gm = 0;
+          cnt_man = 0;
+          cnt_com = 0;
+          $(".c1").text("");
+          $(".c2").text("");
+          $(".c3").text("");
+          $(".c4").text("");
+          $(".c5").text("");
+          $(".y1").text("");
+          $(".y2").text("");
+          $(".y3").text("");
+          $(".y4").text("");
+          $(".y5").text("");
+        }
+      }
+    })
+
+    $("#leftup_btn").on("click", function () {
+
+      const min = 0;
+      const max = 5;
+      const randomnumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log(randomnumber)
+      $(".ball").animate({ "top": "-570px", "left": "725px" }, 500)
+      $(".ball").delay(1000).animate({ "top": "-120px", "left": "465px" })
+
+      if (randomnumber === 0) {
+        $("#com_keeper").text("右上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 1) {
+        $("#com_keeper").text("右下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 2) {
+        $("#com_keeper").text("中央上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "370px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 3) {
+        $("#com_keeper").text("中央下");
+        $("#result").text("GOOOOUL！");
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 4) {
+        $("#com_keeper").text("左上");
+        $("#result").text("失敗");
+        $(".keeper").animate({ "top": "20px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul3()", 1500);
+        setTimeout("anim_goul4()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 5) {
+        $("#com_keeper").text("左下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      }
+      cnt_gm++;
+      console.log(cnt_gm)
+      if (cnt_gm % 2 == 0) {
+        cnt_com++;
+        play = 1;
+        console.log(play)
+        if (randomnumber <= 3 || randomnumber > 4) {
+          ten_com++;
+          if (cnt_com == 1) {
+            $(".c1").text("〇");
+          } else if (cnt_com == 2) {
+            $(".c2").text("〇");
+          } else if (cnt_com == 3) {
+            $(".c3").text("〇");
+          } else if (cnt_com == 4) {
+            $(".c4").text("〇");
+          } else if (cnt_com == 5) {
+            $(".c5").text("〇");
+          }
+        } else {
+          if (cnt_com == 1) {
+            $(".c1").text("✕");
+          } else if (cnt_com == 2) {
+            $(".c2").text("✕");
+          } else if (cnt_com == 3) {
+            $(".c3").text("✕");
+          } else if (cnt_com == 4) {
+            $(".c4").text("✕");
+          } else if (cnt_com == 5) {
+            $(".c5").text("✕");
+          }
+        }
+      } else {
+        cnt_man++;
+        play = 2;
+        console.log(play)
+        if (randomnumber <= 3 || randomnumber > 4) {
+          ten_man++;
+          if (cnt_man == 1) {
+            $(".y1").text("〇");
+          } else if (cnt_man == 2) {
+            $(".y2").text("〇");
+          } else if (cnt_man == 3) {
+            $(".y3").text("〇");
+          } else if (cnt_man == 4) {
+            $(".y4").text("〇");
+          } else if (cnt_man == 5) {
+            $(".y5").text("〇");
+          }
+        } else {
+          if (cnt_man == 1) {
+            $(".y1").text("✕");
+          } else if (cnt_man == 2) {
+            $(".y2").text("✕");
+          } else if (cnt_man == 3) {
+            $(".y3").text("✕");
+          } else if (cnt_man == 4) {
+            $(".y4").text("✕");
+          } else if (cnt_man == 5) {
+            $(".y5").text("✕");
+          }
+        }
+      }
+
+      if (play == 1) {
+        $(".order").text("あなたがキッカーです");
+      } else if (play == 2) {
+        $(".order").text("あなたがキーパーです");
+      }
+
+      if (cnt_gm === 10) {
+        if (ten_man - ten_com > 0) {
+          win_cnt++;
+          $("#final_result").text("あなたの勝ちです")
+          setTimeout("anim_result()", 2500)
+        } else if (ten_com - ten_man > 0) {
+          $("#final_result").text("あなたの負けです")
+          setTimeout("anim_result1()", 2500)
+        } else if (ten_com == ten_man) {
+          $("#final_result").text("サドンデス突入")
+          setTimeout("anim_result2()", 2500)
+          cnt_gm = 0;
+          cnt_man = 0;
+          cnt_com = 0;
+          $(".c1").text("");
+          $(".c2").text("");
+          $(".c3").text("");
+          $(".c4").text("");
+          $(".c5").text("");
+          $(".y1").text("");
+          $(".y2").text("");
+          $(".y3").text("");
+          $(".y4").text("");
+          $(".y5").text("");
+        }
+      }
+    })
+
+    $("#leftdown_btn").on("click", function () {
+
+      const min = 0;
+      const max = 5;
+      const randomnumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      console.log(randomnumber)
+      $(".ball").animate({ "top": "-320px", "left": "725px" }, 500)
+      $(".ball").delay(1000).animate({ "top": "-120px", "left": "465px" })
+
+      if (randomnumber === 0) {
+        $("#com_keeper").text("右上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 1) {
+        $("#com_keeper").text("右下");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "100px", "left": "110px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 2) {
+        $("#com_keeper").text("中央上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "370px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 3) {
+        $("#com_keeper").text("中央下");
+        $("#result").text("GOOOOUL！");
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 4) {
+        $("#com_keeper").text("左上");
+        $("#result").text("GOOOOUL！");
+        $(".keeper").animate({ "top": "20px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul1()", 1500);
+        setTimeout("anim_goul2()", 2000);
+        setTimeout("anim_goul()", 2500);
+      } else if (randomnumber === 5) {
+        $("#com_keeper").text("左下");
+        $("#result").text("失敗");
+        $(".keeper").animate({ "top": "100px", "left": "610px" }, 500)
+        $(".keeper").delay(1000).animate({ "top": "100px", "left": "370px" })
+        setTimeout("anim_goul()", 500);
+        setTimeout("anim_goul5()", 1000);
+        setTimeout("anim_goul3()", 1500);
+        setTimeout("anim_goul4()", 2000);
+        setTimeout("anim_goul()", 2500);
+      }
+      cnt_gm++;
+      console.log(cnt_gm)
+      if (cnt_gm % 2 == 0) {
+        cnt_com++;
+        play = 1;
+        console.log(play)
+        if (randomnumber <= 4) {
+          ten_com++;
+          if (cnt_com == 1) {
+            $(".c1").text("〇");
+          } else if (cnt_com == 2) {
+            $(".c2").text("〇");
+          } else if (cnt_com == 3) {
+            $(".c3").text("〇");
+          } else if (cnt_com == 4) {
+            $(".c4").text("〇");
+          } else if (cnt_com == 5) {
+            $(".c5").text("〇");
+          }
+        } else {
+          if (cnt_com == 1) {
+            $(".c1").text("✕");
+          } else if (cnt_com == 2) {
+            $(".c2").text("✕");
+          } else if (cnt_com == 3) {
+            $(".c3").text("✕");
+          } else if (cnt_com == 4) {
+            $(".c4").text("✕");
+          } else if (cnt_com == 5) {
+            $(".c5").text("✕");
+          }
+        }
+      } else {
+        cnt_man++;
+        play = 2;
+        console.log(play)
+        if (randomnumber <= 4) {
+          ten_man++;
+          if (cnt_man == 1) {
+            $(".y1").text("〇");
+          } else if (cnt_man == 2) {
+            $(".y2").text("〇");
+          } else if (cnt_man == 3) {
+            $(".y3").text("〇");
+          } else if (cnt_man == 4) {
+            $(".y4").text("〇");
+          } else if (cnt_man == 5) {
+            $(".y5").text("〇");
+          }
+        } else {
+          if (cnt_man == 1) {
+            $(".y1").text("✕");
+          } else if (cnt_man == 2) {
+            $(".y2").text("✕");
+          } else if (cnt_man == 3) {
+            $(".y3").text("✕");
+          } else if (cnt_man == 4) {
+            $(".y4").text("✕");
+          } else if (cnt_man == 5) {
+            $(".y5").text("✕");
+          }
+        }
+      }
+
+      if (play == 1) {
+        $(".order").text("あなたがキッカーです");
+      } else if (play == 2) {
+        $(".order").text("あなたがキーパーです");
+      }
+
+      if (cnt_gm === 10) {
+        if (ten_man - ten_com > 0) {
+          win_cnt++;
+          $("#final_result").text("あなたの勝ちです")
+          setTimeout("anim_result()", 2500)
+        } else if (ten_com - ten_man > 0) {
+          $("#final_result").text("あなたの負けです")
+          setTimeout("anim_result1()", 2500)
+        } else if (ten_com == ten_man) {
+          $("#final_result").text("サドンデス突入")
+          setTimeout("anim_result2()", 2500)
+          cnt_gm = 0;
+          cnt_man = 0;
+          cnt_com = 0;
+          $(".c1").text("");
+          $(".c2").text("");
+          $(".c3").text("");
+          $(".c4").text("");
+          $(".c5").text("");
+          $(".y1").text("");
+          $(".y2").text("");
+          $(".y3").text("");
+          $(".y4").text("");
+          $(".y5").text("");
+        }
+      }
+    })
+
+    $("#btn").on("click", function () {
+      cnt_gm = 0;
+      cnt_man = 0;
+      cnt_com = 0;
+      ten_man = 0;
+      ten_com = 0;
+      win_cnt = 0;
+      $(".c1").text("");
+      $(".c2").text("");
+      $(".c3").text("");
+      $(".c4").text("");
+      $(".c5").text("");
+      $(".y1").text("");
+      $(".y2").text("");
+      $(".y3").text("");
+      $(".y4").text("");
+      $(".y5").text("");
+      $("#final_result").text("")
+      $(".order").text("あなたがキッカーです");
+      anim_goul();
+    })
+  </script>
+
+</body>
+
+</html>
